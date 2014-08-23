@@ -1,0 +1,84 @@
+---
+# pt driver prepare
+- name: be sure make is installed
+  apt: name=make state=present
+  tags: make
+
+- name: be sure pkg-config is installed
+  apt: name=pkg-config state=present
+  tags: make
+
+- name: be sure gcc is installed
+  apt: name=gcc state=present
+  tags: gcc
+
+- name: be sure autoconf is installed
+  apt: name=autoconf state=present
+  tags: autoconf
+
+- name: be sure mercurial is installed
+  apt: name=mercurial state=present
+  tags: mercurial
+
+# libs
+- name: be sure libpcsclite-dev is installed
+  apt: name=libpcsclite-dev state=present
+  tags: libpcsclite-dev
+
+- name: be sure pcsc-tools is installed
+  apt: name=pcsc-tools state=present
+  tags: pcsc-tools
+
+- name: be sure pcscd is installed
+  apt: name=pcscd state=present
+  tags: pcscd
+
+# driver setup
+- name: clone pt drivers source and rollback b25 decoder source
+  hg:
+      repo=http://hg.honeyplanet.jp/pt1.oyama/
+      dest={{ pt_dirver_path }}
+      revision=c44e16dbb0e2
+  tags: driver-b25
+
+- name: make b25 decoder
+  command:
+      make chdir={{ pt_dirver_path }}/arib25
+      creates={{ pt_dirver_path }}/arib25/src/b25
+  tags: driver-b25
+
+- name: make install b25 decoder
+  command:
+      make install chdir={{ pt_dirver_path }}/arib25
+      creates=/usr/local/bin/b25
+  tags: driver-b25
+
+- name: make recpt1
+  command:
+      make chdir={{ pt_dirver_path }}/recpt1
+      creates={{ pt_dirver_path }}/recpt1/recpt1
+  tags: recpt1
+
+- name: make install recpt1
+  command:
+      make install
+      chdir={{ pt_dirver_path }}/recpt1
+      creates=/usr/local/bin/recpt1
+  tags: recpt1
+
+- name: clone pt drivers source currentry
+  hg:
+      repo=http://hg.honeyplanet.jp/pt1.oyama/
+      dest={{ pt_dirver_path }}
+      revision=tip
+  tags: driver
+
+- name: make driver
+  command: make chdir={{ pt_dirver_path }}/driver
+  tags: driver
+
+- name: make install driver
+  command: make install chdir={{ pt_dirver_path }}/driver
+  tags: driver
+  notify:
+      - reload pt driver

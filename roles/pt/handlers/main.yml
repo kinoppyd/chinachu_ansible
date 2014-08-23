@@ -1,0 +1,3 @@
+---
+- name: reload pt driver
+  command: modprobe pt1_drv

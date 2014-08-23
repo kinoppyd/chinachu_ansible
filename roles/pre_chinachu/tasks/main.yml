@@ -1,0 +1,51 @@
+---
+# Chinachu requires
+- name: be sure build-essential is installed
+  apt: name=build-essential state=present
+  tags: build-essential
+
+- name: be sure curl is installed
+  apt: name=curl state=present
+  tags: curl
+
+- name: be sure git-core is installed
+  apt: name=git-core state=present
+  tags: git-core
+
+- name: be sure libssl-dev is installed
+  apt: name=libssl-dev state=present
+  tags: libssl-dev
+
+- name: be sure yasm is installed
+  apt: name=yasm state=present
+  tags: yasm
+
+- name: be sure libtool is installed
+  apt: name=libtool state=present
+  tags: libtool
+
+- name: be sure autoconf is installed
+  apt: name=autoconf state=present
+  tags: autoconf
+
+- name: be sure libboost-all-dev is installed
+  apt: name=libboost-all-dev state=present
+  tags: libboost-all-dev
+
+- name: be sure sudo is installed
+  apt: name=sudo state=present
+  tags: sudo
+
+- name: create chinachu user
+  user: name=chinachu
+        password='$6$rounds=100000$t9cFLWAcHkPD2awG$alBfg4PJPCwARrxceQRB5rANzq8QvZwzdCyANDfa5SNTgruKIvhwXGziVopDHU64R7Zl7Fsf44ZEiN56H4fyj/'
+        home=/home/chinachu
+        shell=/bin/bash
+        groups=sudo
+  tags: chinachu_user
+
+- name: add authorized keys
+  authorized_key:
+      user=chinachu
+      key="{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
+  tags: chinachu_user

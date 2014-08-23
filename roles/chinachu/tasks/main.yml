@@ -1,0 +1,9 @@
+---
+# chinachu
+- name: clone chinachu
+  git:
+      repo=git://github.com/kanreisa/Chinachu.git
+      dest={{ chinachu_dir }}
+      version=master
+      accept_hostkey=yes
+  tags: chinachu

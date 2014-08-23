@@ -1,0 +1,13 @@
+---
+- hosts: chinachu-server
+  user: root
+  #sudo: yes
+  roles:
+    - common
+    - pt
+    - pre_chinachu
+
+- hosts: chinachu-server
+  user: chinachu
+  roles:
+    - chinachu
