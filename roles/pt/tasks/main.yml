@@ -4,9 +4,13 @@
   apt: name=make state=present
   tags: make
 
+- name: be sure linux-headers is installed
+  apt: name=linux-headers-{{ ansible_kernel }} state=present
+  tags: linux-headers
+
 - name: be sure pkg-config is installed
   apt: name=pkg-config state=present
-  tags: make
+  tags: pkg-config
 
 - name: be sure gcc is installed
   apt: name=gcc state=present
@@ -37,48 +41,101 @@
 - name: clone pt drivers source and rollback b25 decoder source
   hg:
       repo=http://hg.honeyplanet.jp/pt1.oyama/
-      dest={{ pt_dirver_path }}
+      dest={{ pt1_driver_path }}
       revision=c44e16dbb0e2
   tags: driver-b25
 
 - name: make b25 decoder
   command:
-      make chdir={{ pt_dirver_path }}/arib25
-      creates={{ pt_dirver_path }}/arib25/src/b25
+      make chdir={{ pt1_driver_path }}/arib25
+      creates={{ pt1_driver_path }}/arib25/src/b25
   tags: driver-b25
 
 - name: make install b25 decoder
   command:
-      make install chdir={{ pt_dirver_path }}/arib25
+      make install chdir={{ pt1_driver_path }}/arib25
       creates=/usr/local/bin/b25
   tags: driver-b25
 
-- name: make recpt1
-  command:
-      make chdir={{ pt_dirver_path }}/recpt1
-      creates={{ pt_dirver_path }}/recpt1/recpt1
-  tags: recpt1
+- name: add modprobe
+  shell: echo "blacklist earth-pt1" >> /etc/modprobe.d/blacklist.conf
+  tags: driver
 
-- name: make install recpt1
-  command:
-      make install
-      chdir={{ pt_dirver_path }}/recpt1
-      creates=/usr/local/bin/recpt1
-  tags: recpt1
-
-- name: clone pt drivers source currentry
-  hg:
-      repo=http://hg.honeyplanet.jp/pt1.oyama/
-      dest={{ pt_dirver_path }}
-      revision=tip
+- name: clone driver repository
+  git:
+    repo=https://github.com/m-tsudo/pt3.git
+    dest={{ pt3_driver_path }}
   tags: driver
 
 - name: make driver
-  command: make chdir={{ pt_dirver_path }}/driver
+  command:
+      make
+      chdir={{ pt3_driver_path }}
   tags: driver
 
 - name: make install driver
-  command: make install chdir={{ pt_dirver_path }}/driver
+  command:
+      make install
+      chdir={{ pt3_driver_path }}
   tags: driver
-  notify:
-      - reload pt driver
+
+- name: clone recpt1-stz repository
+  git:
+    repo=https://github.com/stz2012/recpt1.git 
+    dest={{ ptrec_path }}
+  tags: recpt1
+
+- name: gen pt1rec
+  command:
+      ./autogen.sh
+      chdir={{ ptrec_path }}/recpt1
+  tags: recpt1
+
+- name: configure pt1rec
+  command:
+      ./configure --enable-b25
+      chdir={{ ptrec_path }}/recpt1
+  tags: recpt1
+
+- name: make driver
+  command:
+      make
+      chdir={{ ptrec_path }}/recpt1
+  tags: recpt1
+
+- name: make install driver
+  command:
+      make install
+      chdir={{ ptrec_path }}/recpt1
+  tags: recpt1
+
+# for pt2
+#- name: make recpt1
+#  command:
+#      make chdir={{ pt1_driver_path }}/recpt1
+#      creates={{ pt1_driver_path }}/recpt1/recpt1
+#  tags: recpt1
+#
+#- name: make install recpt1
+#  command:
+#      make install
+#      chdir={{ pt1_driver_path }}/recpt1
+#      creates=/usr/local/bin/recpt1
+#  tags: recpt1
+#
+#- name: clone pt drivers source currentry
+#  hg:
+#      repo=http://hg.honeyplanet.jp/pt1.oyama/
+#      dest={{ pt1_driver_path }}
+#      revision=tip
+#  tags: driver
+#
+#- name: make driver
+#  command: make chdir={{ pt1_driver_path }}/driver
+#  tags: driver
+#
+#- name: make install driver
+#  command: make install chdir={{ pt1_driver_path }}/driver
+#  tags: driver
+#  notify:
+#      - reload pt driver

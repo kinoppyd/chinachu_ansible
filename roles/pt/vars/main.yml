@@ -1,2 +1,4 @@
 ---
-pt_dirver_path: "/tmp/pt1.oyama"
+pt1_driver_path: "/tmp/pt1.oyama"
+pt3_driver_path: "/tmp/pt3"
+ptrec_path: "/tmp/stz_ptrec"
