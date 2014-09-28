@@ -97,13 +97,13 @@
       chdir={{ ptrec_path }}/recpt1
   tags: recpt1
 
-- name: make driver
+- name: make recpt1
   command:
       make
       chdir={{ ptrec_path }}/recpt1
   tags: recpt1
 
-- name: make install driver
+- name: make install recpt1
   command:
       make install
       chdir={{ ptrec_path }}/recpt1
