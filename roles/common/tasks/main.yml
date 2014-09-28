@@ -10,3 +10,7 @@
 - name: be sure git is installed
   apt: name=git state=present
   tags: git
+
+- name: be sure tmux is installed
+  apt: name=tmux state=present
+  tags: tmux
