@@ -4,3 +4,6 @@
 [submodule "roles/vm"]
 	path = roles/vm
 	url = git@github.com:YasuhiroKinoshita/ansible_debian_virtual_machine_env_roles.git
+[submodule "roles/samba"]
+	path = roles/samba
+	url = git@github.com:YasuhiroKinoshita/ansible_debian_samba_roles.git
