@@ -1,8 +1,0 @@
----
-- name: be sure samba is installed
-  apt: name=samba state=present
-  tags: samba
-
-- name: be sure samba is running and enabled
-  service: name=samba state=running enabled=yes
-  tags: samba
