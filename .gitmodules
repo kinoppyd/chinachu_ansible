@@ -1,3 +1,6 @@
 [submodule "roles/common"]
 	path = roles/common
 	url = git://github.com/YasuhiroKinoshita/ansible_debian_common_roles
+[submodule "roles/vm"]
+	path = roles/vm
+	url = git@github.com:YasuhiroKinoshita/ansible_debian_virtual_machine_env_roles.git
