@@ -1,9 +1,27 @@
 ---
 # chinachu
+- name: make sure expect installed
+  apt: name=expect state=present
+  tags: chinachu
+
 - name: clone chinachu
   git:
       repo=git://github.com/kanreisa/Chinachu.git
       dest={{ chinachu_dir }}
       version=master
       accept_hostkey=yes
+  tags: chinachu
+
+- name: create symlink
+  file: src={{ chinachu_dir }}/chinachu dest={{ chinachu_symlink }} state=link
+  tags: chinachu
+
+- name: copy file
+  copy: src=chinachu_installer.sh dest=/home/chinachu mode=0744
+  tags: chinachu
+
+- name: install chinachu
+  command:
+      ./chinachu_installer.sh
+      chdir=/home/chinachu
   tags: chinachu
