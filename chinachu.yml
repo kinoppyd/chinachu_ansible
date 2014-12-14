@@ -1,7 +1,6 @@
 ---
 - hosts: chinachu-server
   user: root
-  #sudo: yes
   roles:
     - common
     - pt
