@@ -13,7 +13,7 @@
   tags: chinachu
 
 - name: create symlink
-  file: src={{ chinachu_dir }}/{{ chinachu_root_dir_name}} dest={{ chinachu_symlink }} state=link
+  file: src={{ chinachu_dir }}/{{ chinachu_root_dir_name}}/chinachu dest={{ chinachu_symlink }} state=link
   tags: chinachu
 
 - name: copy file
@@ -27,7 +27,7 @@
   tags: chinachu
 
 - name: chinachu config
-  template: src=config.json.j2 dest={{ chinachu_dir }}/config.json
+  template: src=config.json.j2 dest={{ chinachu_dir }}/{{ chinachu_root_dir_name }}/config.json
   tags: chinachu-config
 
 - name: create video dir
