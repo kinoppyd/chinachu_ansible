@@ -49,3 +49,7 @@
       user=chinachu
       key="{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
   tags: chinachu_user
+
+- name: make sure expect installed
+  apt: name=expect state=present
+  tags: chinachu

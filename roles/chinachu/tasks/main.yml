@@ -1,9 +1,5 @@
 ---
 # chinachu
-- name: make sure expect installed
-  apt: name=expect state=present
-  tags: chinachu
-
 - name: clone chinachu
   git:
       repo=git://github.com/kanreisa/Chinachu.git
