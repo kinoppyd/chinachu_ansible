@@ -7,21 +7,29 @@
 - name: clone chinachu
   git:
       repo=git://github.com/kanreisa/Chinachu.git
-      dest={{ chinachu_dir }}
+      dest={{ chinachu_dir }}/{{ chinachu_root_dir_name }}
       version=master
       accept_hostkey=yes
   tags: chinachu
 
 - name: create symlink
-  file: src={{ chinachu_dir }}/chinachu dest={{ chinachu_symlink }} state=link
+  file: src={{ chinachu_dir }}/{{ chinachu_root_dir_name}} dest={{ chinachu_symlink }} state=link
   tags: chinachu
 
 - name: copy file
-  copy: src=chinachu_installer.sh dest=/home/chinachu mode=0744
+  copy: src=chinachu_installer.sh dest={{ chinachu_dir }} mode=0744
   tags: chinachu
 
 - name: install chinachu
   command:
       ./chinachu_installer.sh
-      chdir=/home/chinachu
+      chdir={{ chinachu_dir }}
   tags: chinachu
+
+- name: chinachu config
+  template: src=config.json.j2 dest={{ chinachu_dir }}/config.json
+  tags: chinachu-config
+
+- name: create video dir
+  file: path="{{ chinachu_dir }}/{{ chinachu_video_dir }}" state=directory
+  tags: chinachu-config

@@ -1,3 +1,25 @@
 ---
-chinachu_dir: "/home/chinachu/chinachu"
+chinachu_dir: "/home/chinachu"
+chinachu_root_dir_name: "chinachu"
 chinachu_symlink: "chinachu_cmd"
+chinachu_video_dir: "video"
+
+chinachu_user: "chinachu"
+chinachu_password: "chinachu"
+ceinachu_twitter_consumer_key: "your_consumer_key"
+chinachu_twitter_consumer_secret: "your_consumer_secret"
+chinachu_twitter_access_token: "your_access_token"
+chinachu_twitter_access_token_secret: "your_access_token_secret"
+
+chinachu_channel_list:
+  - 18
+  - 20
+  - 21
+  - 22
+  - 23
+  - 24
+  - 25
+  - 26
+  - 27
+  - 28
+  - 30

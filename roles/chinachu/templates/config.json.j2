@@ -1,0 +1,77 @@
+{
+  "recordedDir" : "{{ chinachu_dir }}/{{ chinachu_video_dir }}/",
+  "temporaryDir": "/tmp/",
+  
+  "wuiUsers": [
+    "{{ chinachu_user }}:{{ chinachu_password }}"
+  ],
+  
+  "wuiPort"        : 10772,
+  "wuiHost"        : "0.0.0.0",
+  "wuiTlsKeyPath"  : null, "wuiTlsCertPath" : null,
+  "wuiOpenServer"  : false,
+  "wuiOpenPort"    : 20772,
+  "wuiPreviewer"   : true,
+  "wuiStreamer"    : true,
+  "wuiFiler"       : true,
+  "wuiConfigurator": true,
+
+  "operSchedulerProcessTime" : 600000,
+  "operScheduleIntervalTime" : 1800000,
+  "operSchedulerSleepStartHour" : 5,
+  "operSchedulerSleepEndHour" : 20,
+
+  "operRecPrepTime"   : 30000,
+  "operRecOffsetStart": 30000,
+
+  {% if chinachu_twitter_consumer_key is defined and chinachu_twitter_consumer_secret is defined and chinachu_twitter_access_token is defined and  chinachu_twitter_access_token_secret %}
+  "operTweeter"       : true,
+  "operTweeterAuth"   : {
+    "consumerKey"       : "{{ chinachu_twitter_consumer_key }}",
+    "consumerSecret"    : "{{ chinachu_twitter_consumer_secret }}",
+    "accessToken"       : "{{ chinachu_twitter_access_token }}",
+    "accessTokenSecret" : "{{ chinachu_twitter_access_token_secret }}"
+  },
+  {% endif %}
+  "operTweeterFormat" : {
+    "start"   : "Chinachuが<channel>chで「<title>」を録画開始 ＼ｱｯｶﾘｰﾝ／"
+  },
+
+  "recordedFormat": "[<date:yymmdd-HHMM>][<type><channel>][<tuner>]<title>.ts",
+  
+  "tuners": [
+    {
+      "name"        : "PT3-T1",
+      "isScrambling": false,
+      "types"       : [ "GR" ],
+      "command"     : "recpt1 --device /dev/pt3video2 --b25 --strip <channel> - -"
+    },
+    {
+      "name"        : "PT3-T2",
+      "isScrambling": false,
+      "types"       : [ "GR" ],
+      "command"     : "recpt1 --device /dev/pt3video3 --b25 --strip <channel> - -"
+    },
+    {
+      "name"        : "PT3-T3",
+      "isScrambling": false,
+      "types"       : [ "GR" ],
+      "command"     : "recpt1 --device /dev/pt3video6 --b25 --strip <channel> - -"
+    },
+    {
+      "name"        : "PT3-T4",
+      "isScrambling": false,
+      "types"       : [ "GR" ],
+      "command"     : "recpt1 --device /dev/pt3video7 --b25 --strip <channel> - -"
+    }
+  ],
+  
+  "channels": [
+    {% for channel in chinachu_channel_list %}
+    { "type": "GR", "channel": "{{ channel }}" }{% if not loop.last %},
+    {% else %}
+
+    {% endif %}
+    {% endfor %}
+  ]
+}
