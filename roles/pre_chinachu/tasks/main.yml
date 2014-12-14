@@ -47,7 +47,8 @@
 - name: add authorized keys
   authorized_key:
       user=chinachu
-      key="{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
+      key="{{ lookup('file', item) }}"
+  with_items: pre_chinachu_private_key
   tags: chinachu_user
 
 - name: make sure expect installed
